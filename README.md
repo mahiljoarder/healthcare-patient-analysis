@@ -66,7 +66,7 @@ A healthcare facility managing patient records across multiple departments and d
 - Created `age_group` calculated column using nested `IF` statements
 - Created `payment_category` measure using `IF` logic
 
----
+
 
 ## 📊 SQL Analysis 
 
