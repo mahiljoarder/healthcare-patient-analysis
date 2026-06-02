@@ -68,7 +68,7 @@ A healthcare facility managing patient records across multiple departments and d
 
 
 
-## 📊 SQL Analysis 
+## SQL Analysis 
 
 ### Department Analysis 
 | # | Question | Answer |
@@ -164,7 +164,7 @@ A healthcare facility managing patient records across multiple departments and d
 
 
 
-## 👤 Author
+## Author
 
 **Mahil Joarder**
 Data Analyst | SQL • Excel • Power BI
