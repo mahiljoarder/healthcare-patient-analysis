@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare Patient Records — Mahil Joarder</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --ink: #0f0e0d;
+  --ink-2: #3a3834;
+  --ink-3: #6b6860;
+  --rule: #e0ddd8;
+  --bg: #f7faf9;
+  --bg-2: #edf2f0;
+  --accent: #0D9488;
+  --accent-warm: #8b3a2a;
+  --green: #10B981;
+  --red: #EF4444;
+  --blue: #3B82F6;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 4rem;
+  border-bottom: 1px solid var(--rule);
+}
+.cover-top { display: flex; flex-direction: column; justify-content: center; }
+.cover-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cover-eyebrow::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--accent);
+}
+.cover h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+.cover h1 em { font-style: italic; color: var(--accent); }
+.cover-desc {
+  font-size: 1rem;
+  color: var(--ink-2);
+  max-width: 480px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.cover-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+.cover-meta {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--ink-3);
+  line-height: 2;
+}
+.cover-meta strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: var(--ink);
+  display: block;
+  line-height: 1.3;
+  margin-bottom: 0.2rem;
+}
+.cover-kpis { display: flex; gap: 3rem; }
+.cover-kpi { text-align: right; }
+.cover-kpi .val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+}
+.cover-kpi .lbl {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+/* PAGE */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 4rem;
+  border-bottom: 1px solid var(--rule);
+}
+.page-header {
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.page-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  font-weight: 300;
+  color: var(--rule);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+  line-height: 1.1;
+}
+.page-title em { font-style: italic; color: var(--accent); }
+
+/* METRIC GRID */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 3rem;
+}
+.metric {
+  background: var(--bg);
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+.metric::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 2px;
+  height: 100%;
+  background: transparent;
+  transition: background 0.3s;
+}
+.metric:hover::before { background: var(--accent); }
+.metric .m-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.metric .m-val.red { color: var(--red); }
+.metric .m-val.green { color: var(--green); }
+.metric .m-lbl {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric .m-sub { font-size: 0.8rem; color: var(--ink-3); }
+
+/* FINDINGS */
+.findings { display: flex; flex-direction: column; gap: 0; }
+.finding {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+.finding:last-child { border-bottom: none; }
+.finding-q {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.5rem;
+}
+.finding-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink-2);
+}
+.finding-answer { text-align: right; }
+.finding-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.finding-sub { font-size: 0.8rem; color: var(--ink-3); }
+
+/* BAR CHART */
+.bar-chart { margin: 2.5rem 0; }
+.bar-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 90px;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.bar-label { font-size: 0.82rem; color: var(--ink-2); }
+.bar-track { background: var(--bg-2); height: 8px; }
+.bar-fill { height: 100%; background: var(--accent); }
+.bar-fill.warm { background: var(--accent-warm); }
+.bar-fill.red { background: var(--red); }
+.bar-fill.blue { background: var(--blue); }
+.bar-fill.green { background: var(--green); }
+.bar-val { font-size: 0.82rem; color: var(--ink-2); text-align: right; font-family: 'JetBrains Mono', monospace; }
+
+/* INSIGHT CARDS */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.insight-card {
+  padding: 1.75rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  background: var(--bg);
+  transition: border-color 0.2s;
+}
+.insight-card.warn { border-left-color: var(--accent-warm); }
+.insight-card.red { border-left-color: var(--red); }
+.insight-card.green { border-left-color: var(--green); }
+.insight-card:hover { border-color: var(--ink-3); border-left-color: inherit; }
+.insight-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.75rem;
+}
+.insight-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.insight-card p { font-size: 0.85rem; color: var(--ink-2); line-height: 1.6; }
+
+/* SECTION TITLE */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--ink-2);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  font-style: italic;
+}
+
+/* TWO COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+
+/* BACK COVER */
+.back-cover {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem;
+  border-top: 1px solid var(--rule);
+}
+.back-cover h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.back-cover .github-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.back-cover .github-link:hover { color: var(--accent); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  .cover, .page { padding: 2.5rem 2rem; }
+  .metric-grid { grid-template-columns: repeat(2, 1fr); }
+  .finding { grid-template-columns: 1fr; gap: 0.5rem; }
+  .finding-answer { text-align: left; }
+  .two-col { grid-template-columns: 1fr; gap: 2rem; }
+  .insight-grid { grid-template-columns: 1fr; }
+  .cover-kpis { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="cover-eyebrow">Patient Records Analysis Report</div>
+    <h1>Healthcare<br><em>Patient Analysis</em></h1>
+    <p class="cover-desc">A comprehensive analysis of patient records covering department performance, financial health, doctor efficiency, patient demographics, and admission patterns.</p>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-meta">
+      <strong>Mahil Joarder</strong>
+      Data Analyst<br>
+      SQL &nbsp;·&nbsp; Excel &nbsp;·&nbsp; Power BI
+    </div>
+    <div class="cover-kpis">
+      <div class="cover-kpi">
+        <span class="val">$1.29M</span>
+        <span class="lbl">Total Revenue</span>
+      </div>
+      <div class="cover-kpi">
+        <span class="val">175</span>
+        <span class="lbl">Patients</span>
+      </div>
+      <div class="cover-kpi">
+        <span class="val">45</span>
+        <span class="lbl">Queries</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 1 — OVERVIEW -->
+<section class="page">
+  <div class="page-header">
+    <span class="page-num">01</span>
+    <h2 class="page-title">Business <em>Overview</em></h2>
+  </div>
+  <div class="metric-grid">
+    <div class="metric">
+      <span class="m-lbl">Total Patients</span>
+      <span class="m-val">175</span>
+      <span class="m-sub">Across 18 departments</span>
+    </div>
+    <div class="metric">
+      <span class="m-lbl">Total Revenue</span>
+      <span class="m-val">$1.29M</span>
+      <span class="m-sub">Amount collected</span>
+    </div>
+    <div class="metric">
+      <span class="m-lbl">Total Billed</span>
+      <span class="m-val">$1.51M</span>
+      <span class="m-sub">Amount charged</span>
+    </div>
+    <div class="metric">
+      <span class="m-lbl">Total Unpaid</span>
+      <span class="m-val red">$222.8K</span>
+      <span class="m-sub">Outstanding balance</span>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <p class="section-title">Revenue by department</p>
+      <div class="bar-chart">
+        <div class="bar-row"><span class="bar-label">Cardiology</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">$420.8K</span></div>
+        <div class="bar-row"><span class="bar-label">Geriatrics</span><div class="bar-track"><div class="bar-fill" style="width:51%"></div></div><span class="bar-val">$215.5K</span></div>
+        <div class="bar-row"><span class="bar-label">Oncology</span><div class="bar-track"><div class="bar-fill" style="width:35%"></div></div><span class="bar-val">$147.0K</span></div>
+        <div class="bar-row"><span class="bar-label">Emergency</span><div class="bar-track"><div class="bar-fill" style="width:31%"></div></div><span class="bar-val">$130.1K</span></div>
+        <div class="bar-row"><span class="bar-label">Orthopedics</span><div class="bar-track"><div class="bar-fill" style="width:31%"></div></div><span class="bar-val">$128.7K</span></div>
+      </div>
+    </div>
+    <div>
+      <p class="section-title">Patients by department</p>
+      <div class="bar-chart">
+        <div class="bar-row"><span class="bar-label">Emergency</span><div class="bar-track"><div class="bar-fill blue" style="width:100%"></div></div><span class="bar-val">33</span></div>
+        <div class="bar-row"><span class="bar-label">Cardiology</span><div class="bar-track"><div class="bar-fill blue" style="width:61%"></div></div><span class="bar-val">20</span></div>
+        <div class="bar-row"><span class="bar-label">Geriatrics</span><div class="bar-track"><div class="bar-fill blue" style="width:42%"></div></div><span class="bar-val">14</span></div>
+        <div class="bar-row"><span class="bar-label">Dermatology</span><div class="bar-track"><div class="bar-fill blue" style="width:42%"></div></div><span class="bar-val">14</span></div>
+        <div class="bar-row"><span class="bar-label">Oncology</span><div class="bar-track"><div class="bar-fill blue" style="width:39%"></div></div><span class="bar-val">13</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 2 — FINANCIAL -->
+<section class="page">
+  <div class="page-header">
+    <span class="page-num">02</span>
+    <h2 class="page-title">Financial <em>Health</em></h2>
+  </div>
+  <div class="findings">
+    <div class="finding">
+      <div>
+        <div class="finding-q">Payment collection</div>
+        <div class="finding-label">Percentage of patients who have fully paid their bill</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">70.9%</span>
+        <span class="finding-sub">Fully Paid · 27.4% Partially · 1.7% Unpaid</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Revenue gap</div>
+        <div class="finding-label">Difference between total billed and total collected</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">$222,000</span>
+        <span class="finding-sub">Billed $1.51M · Collected $1.29M</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Insurance coverage</div>
+        <div class="finding-label">Largest insurance provider by patient count</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">BlueCross</span>
+        <span class="finding-sub">45 patients — but pays only 81.4% of bills</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Most expensive diagnosis</div>
+        <div class="finding-label">Highest average bill by diagnosis type</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">Heart Attack</span>
+        <span class="finding-sub">$55,000 average bill per patient</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Unpaid balance leader</div>
+        <div class="finding-label">Insurance provider with highest outstanding balance</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">BlueCross</span>
+        <span class="finding-sub">$71,300 in unpaid bills</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Uninsured patients</div>
+        <div class="finding-label">Patients with no insurance coverage</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">1 Patient</span>
+        <span class="finding-sub">Avg bill for uninsured: $2,538 vs insured $8,781</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 3 — DOCTOR & PATIENT -->
+<section class="page">
+  <div class="page-header">
+    <span class="page-num">03</span>
+    <h2 class="page-title">Doctor <em>& Patient</em></h2>
+  </div>
+  <div class="two-col">
+    <div>
+      <p class="section-title">Top doctors by revenue</p>
+      <div class="bar-chart">
+        <div class="bar-row"><span class="bar-label">Dr. Brown</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">$390.5K</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Davis</span><div class="bar-track"><div class="bar-fill" style="width:64%"></div></div><span class="bar-val">$251.4K</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Johnson</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><span class="bar-val">$227.6K</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Smith</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="bar-val">$213.7K</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Wilson</span><div class="bar-track"><div class="bar-fill" style="width:53%"></div></div><span class="bar-val">$205.4K</span></div>
+      </div>
+    </div>
+    <div>
+      <p class="section-title">Average rating by doctor</p>
+      <div class="bar-chart">
+        <div class="bar-row"><span class="bar-label">Dr. Brown</span><div class="bar-track"><div class="bar-fill green" style="width:100%"></div></div><span class="bar-val">4.26</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Johnson</span><div class="bar-track"><div class="bar-fill green" style="width:98%"></div></div><span class="bar-val">4.18</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Davis</span><div class="bar-track"><div class="bar-fill green" style="width:98%"></div></div><span class="bar-val">4.16</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Wilson</span><div class="bar-track"><div class="bar-fill green" style="width:97%"></div></div><span class="bar-val">4.11</span></div>
+        <div class="bar-row"><span class="bar-label">Dr. Smith</span><div class="bar-track"><div class="bar-fill green" style="width:96%"></div></div><span class="bar-val">4.08</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="findings" style="margin-top:3rem">
+    <div class="finding">
+      <div>
+        <div class="finding-q">Patient demographics</div>
+        <div class="finding-label">Gender split across all patients</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val" style="font-size:1.4rem; line-height:1.6">Male 90 · Female 85</span>
+        <span class="finding-sub">Near equal gender distribution</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Smoking impact</div>
+        <div class="finding-label">Average bill for smokers vs non-smokers</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">3x Higher</span>
+        <span class="finding-sub">Smokers avg $19,675 · Non-smokers avg $6,355</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Average patient age</div>
+        <div class="finding-label">Mean age across all 175 patients</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">47.6 years</span>
+        <span class="finding-sub">Middle Aged group — 99 patients</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Most common blood type</div>
+        <div class="finding-label">Blood type distribution across patients</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">B+</span>
+        <span class="finding-sub">27 patients — most prevalent blood type</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 4 — ADMISSIONS -->
+<section class="page">
+  <div class="page-header">
+    <span class="page-num">04</span>
+    <h2 class="page-title">Admission <em>Trends</em></h2>
+  </div>
+  <div class="findings">
+    <div class="finding">
+      <div>
+        <div class="finding-q">Average stay</div>
+        <div class="finding-label">Mean length of hospital stay across all patients</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">3.27 days</span>
+        <span class="finding-sub">Geriatrics longest at 7.07 days · Emergency shortest at 0.97</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Peak admission month</div>
+        <div class="finding-label">Month with the highest number of patient admissions</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">March</span>
+        <span class="finding-sub">16 admissions · April and May also peak at 16</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Age and length of stay</div>
+        <div class="finding-label">Do older patients stay longer in hospital?</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val" style="font-size:1.2rem; line-height:1.8">
+          Senior: 5.93 days<br>
+          Middle Aged: 2.69 days<br>
+          Young: 1.00 day
+        </span>
+        <span class="finding-sub">Yes — older patients stay significantly longer</span>
+      </div>
+    </div>
+    <div class="finding">
+      <div>
+        <div class="finding-q">Diagnosis with longest stay</div>
+        <div class="finding-label">Which condition requires the longest hospital stay?</div>
+      </div>
+      <div class="finding-answer">
+        <span class="finding-val">Heart Attack</span>
+        <span class="finding-sub">Average 8 days per admission</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 5 — KEY INSIGHTS -->
+<section class="page">
+  <div class="page-header">
+    <span class="page-num">05</span>
+    <h2 class="page-title">Key <em>Insights</em></h2>
+  </div>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <div class="insight-label">Revenue leadership</div>
+      <h3>Cardiology drives the most revenue</h3>
+      <p>Cardiology generated $420,800 in revenue and has the highest revenue per visit at $21,040. It is the most profitable department in the facility by a significant margin.</p>
+    </div>
+    <div class="insight-card red">
+      <div class="insight-label">Financial risk</div>
+      <h3>Oncology carries the highest financial risk</h3>
+      <p>Oncology has both the highest average bill at $22,615 and the highest unpaid balance at $147,000. Patients in this department are more likely to be partially paid or unpaid.</p>
+    </div>
+    <div class="insight-card warn">
+      <div class="insight-label">Insurance concern</div>
+      <h3>BlueCross covers most patients but pays the least</h3>
+      <p>BlueCross insures the most patients (45) but has the lowest payment rate at 81.4% and the highest unpaid balance at $71,300. This relationship needs closer monitoring.</p>
+    </div>
+    <div class="insight-card green">
+      <div class="insight-label">Collection strength</div>
+      <h3>70.9% of patients are fully paid</h3>
+      <p>The majority of patients have settled their bills in full. Only 1.7% are completely unpaid. The $222,800 gap is largely from partially paid accounts worth pursuing.</p>
+    </div>
+    <div class="insight-card red">
+      <div class="insight-label">Smoking cost impact</div>
+      <h3>Smokers cost the facility three times more</h3>
+      <p>The average bill for smokers is $19,675 compared to $6,355 for non-smokers. While smokers represent only 17% of patients, they generate a disproportionate share of costs.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-label">Capacity planning</div>
+      <h3>Senior patients require significantly longer stays</h3>
+      <p>Senior patients stay an average of 5.93 days compared to 1.00 day for young patients. Geriatrics has the longest average stay at 7.07 days, which has direct staffing and bed capacity implications.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BACK COVER -->
+<section class="back-cover">
+  <h2>Thank you</h2>
+  <a class="github-link" href="https://github.com/mahiljoarder" target="_blank">github.com/mahiljoarder</a>
+</section>
+
+</body>
+</html>
